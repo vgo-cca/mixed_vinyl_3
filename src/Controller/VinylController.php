@@ -40,7 +40,9 @@ class VinylController extends AbstractController
 
         // $mixes = $this->mixRepository->findAll();
         // $mixes = $mixRepository->findAll();
-        $mixes = $mixRepository->findBy([], ['votes' => 'DESC']);
+        // $mixes = $mixRepository->findBy(['genre' => $slug], ['votes' => 'DESC']);
+        // $mixes = $mixRepository->findBy([], ['votes' => 'DESC']);
+        $mixes = $mixRepository->findAllOrderedByVotes($slug);
 
         return $this->render('vinyl/browse.html.twig', [
             'genre' => $genre,

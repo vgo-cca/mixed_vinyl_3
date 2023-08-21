@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\VinylMix;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -39,28 +40,36 @@ class VinylMixRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return VinylMix[] Returns an array of VinylMix objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('v')
-//            ->andWhere('v.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('v.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @return VinylMix[] Returns an array of VinylMix objects
+     */
+    public function findAllOrderedByVotes(string $genre = null): array
+    {
+        $queryBuilder = $this->addOrderByVotesQueryBuilder();
 
-//    public function findOneBySomeField($value): ?VinylMix
-//    {
-//        return $this->createQueryBuilder('v')
-//            ->andWhere('v.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        if ($genre) {
+            $queryBuilder->andWhere('mix.genre = :genre')
+                ->setParameter('genre', $genre);
+        }
+        return $queryBuilder
+            ->getQuery()
+            ->getResult();
+        // ->getOneOrNullResult()
+    }
+
+    private function addOrderByVotesQueryBuilder(QueryBuilder $queryBuilde = null): QueryBuilder
+    {
+        $queryBuilder = $queryBuilder ?? $this->createQueryBuilder('mix');
+        return $queryBuilder->orderBy('mix.votes', 'DESC');
+    }
+
+    //    public function findOneBySomeField($value): ?VinylMix
+    //    {
+    //        return $this->createQueryBuilder('v')
+    //            ->andWhere('v.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }
