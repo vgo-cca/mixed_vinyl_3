@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use App\Service\MixRepository;
+use App\Repository\VinylMixRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -18,9 +18,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class TalkToMeCommand extends Command
 {
     public function __construct(
-        private MixRepository $mixRepository
-    )
-    {
+        private VinylMixRepository $mixRepository
+    ) {
         parent::__construct();
     }
 
@@ -28,8 +27,7 @@ class TalkToMeCommand extends Command
     {
         $this
             ->addArgument('name', InputArgument::OPTIONAL, 'Your name')
-            ->addOption('yell', null, InputOption::VALUE_NONE, 'Shall I yell?')
-        ;
+            ->addOption('yell', null, InputOption::VALUE_NONE, 'Shall I yell?');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
