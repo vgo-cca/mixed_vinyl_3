@@ -32,10 +32,23 @@ class MixController extends AbstractController
         ));
     }
 
+    // #[Route('mix/{id}', name: 'app_mix_show')]
+    // public function show($id, VinylMixRepository $mixRepository)
+    // {
+    //     $mix = $mixRepository->find($id);
+
+    //     if (!$mix) {
+    //         throw $this->createNotFoundException('Mix not found');
+    //     }
+    //     return $this->render('mix/show.html.twig', [
+    //         'mix' => $mix,
+    //     ]);
+    // }
+
+    //param converter : query for a single object
     #[Route('mix/{id}', name: 'app_mix_show')]
-    public function show($id, VinylMixRepository $mixRepository)
+    public function show(VinylMix $mix)
     {
-        $mix = $mixRepository->find($id);
         return $this->render('mix/show.html.twig', [
             'mix' => $mix,
         ]);
