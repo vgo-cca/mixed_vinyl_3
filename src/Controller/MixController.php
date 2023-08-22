@@ -23,6 +23,7 @@ class MixController extends AbstractController
         $mix->setTrackCount(rand(5, 20));
         $mix->setVotes(rand(-50, 50));
 
+        // Create a new object : persist and flush
         $entityManager->persist($mix);
         $entityManager->flush();
 
@@ -46,7 +47,7 @@ class MixController extends AbstractController
     //     ]);
     // }
 
-    //param converter : query for a single object
+    // Param converter : query for a single object
     #[Route('mix/{id}', name: 'app_mix_show')]
     public function show(VinylMix $mix): Response
     {
@@ -56,7 +57,7 @@ class MixController extends AbstractController
     }
 
     #[Route('/mix/{id}/vote', name: 'app_mix_vote', methods: ['POST'])]
-    public function vote(VinylMix $mix, Request $request): Response
+    public function vote(VinylMix $mix, Request $request, EntityManagerInterface $entityManager): Response
     {
         // if not direction pass up.
         $direction = $request->request->get('direction', 'up');
@@ -66,6 +67,10 @@ class MixController extends AbstractController
             $mix->setVotes($mix->getVotes() - 1);
         }
 
-        dd($mix);
+        // Update an existing object: flush
+        $entityManager->flush();
+        return $this->redirectToRoute('app_mix_show', [
+            'id' => $mix->getId(),
+        ]);
     }
 }
