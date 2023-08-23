@@ -57,6 +57,20 @@ class VinylMixRepository extends ServiceEntityRepository
         // ->getOneOrNullResult()
     }
 
+    /**
+     * @return QueryBuilder
+     */
+    public function createOrderedByVotesQueryBuilder(string $genre = null): QueryBuilder
+    {
+        $queryBuilder = $this->addOrderByVotesQueryBuilder();
+
+        if ($genre) {
+            $queryBuilder->andWhere('mix.genre = :genre')
+                ->setParameter('genre', $genre);
+        }
+        return $queryBuilder;
+    }
+
     private function addOrderByVotesQueryBuilder(QueryBuilder $queryBuilde = null): QueryBuilder
     {
         $queryBuilder = $queryBuilder ?? $this->createQueryBuilder('mix');
